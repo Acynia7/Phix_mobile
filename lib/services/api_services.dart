@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   static Future<void> fetchData(String? token) async {
-    final url = Uri.parse('https://localhost/api/sessions');
+    final url = Uri.parse('https://std33.beaupeyrat.com/api/sessions');
 
     final response = await http.get(
       url,
@@ -21,19 +21,34 @@ class ApiService {
   }
 
   static Future<bool> verifySessionCode(String sessionCode) async {
-    final url = Uri.parse('https://localhost/api/sessions');
+    final url = Uri.parse('https://std33.beaupeyrat.com/api/sessions?code=$sessionCode');
 
-    final response = await http.post(
+    final response = await http.get(
       url,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({'sessionCode': sessionCode}),
     );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
-      return responseBody['exists'] as bool;
+      print('Response JSON: $responseBody');
+      
+      // Imprimer toutes les clés et valeurs de la réponse JSON
+      responseBody.forEach((key, value) {
+        print('Key: $key, Value: $value');
+      });
+
+      // Vérifier la structure de la réponse JSON
+      if (responseBody is Map && responseBody.containsKey('member')) {
+        return responseBody['member'] != null;
+      } else {
+        print('Erreur: clé "member" manquante dans la réponse JSON');
+        return false;
+      }
     } else {
       print('Erreur: ${response.statusCode}');
       return false;

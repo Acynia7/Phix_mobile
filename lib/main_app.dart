@@ -39,23 +39,27 @@ class MainApp extends StatelessWidget {
                           return null;
                         },
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            // Appeler verifySessionCode
-                            bool sessionExists = await ApiService.verifySessionCode(_codeController.text);
-                            if (sessionExists) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Session code is valid.')),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Session code is invalid.')),
-                              );
-                            }
-                          }
+                      Builder(
+                        builder: (BuildContext context) {
+                          return ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                // Appeler verifySessionCode
+                                bool sessionExists = await ApiService.verifySessionCode(_codeController.text);
+                                if (sessionExists) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Session code is valid.')),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Session code is invalid.')),
+                                  );
+                                }
+                              }
+                            },
+                            child: const Text('Submit'),
+                          );
                         },
-                        child: const Text('Submit'),
                       ),
                     ],
                   ),
