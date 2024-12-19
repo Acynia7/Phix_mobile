@@ -54,4 +54,28 @@ class ApiService {
       return false;
     }
   }
+
+  static Future<void> updatePseudo(String sessionCode, String pseudo) async {
+    final url = Uri.parse('https://std33.beaupeyrat.com/api/sessions/updatePseudo');
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'code': sessionCode,
+        'pseudo': pseudo,
+      }),
+    );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      print('Pseudo updated successfully');
+    } else {
+      print('Erreur: ${response.statusCode}');
+    }
+  }
 }

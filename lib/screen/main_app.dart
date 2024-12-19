@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'qr_camera_widget.dart';
-import 'services/api_services.dart'; // Importer ApiService
+import 'package:phix/screen/pseudo_screen.dart';
+import '../qr_camera_widget.dart';
+import '../services/api_services.dart'; // Importer ApiService
 
 class MainApp extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -47,9 +48,7 @@ class MainApp extends StatelessWidget {
                                 // Appeler verifySessionCode
                                 bool sessionExists = await ApiService.verifySessionCode(_codeController.text);
                                 if (sessionExists) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Session code is valid.')),
-                                  );
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const PseudoScreen()),);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Session code is invalid.')),
